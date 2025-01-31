@@ -3,13 +3,13 @@
 Linters
 =======
 
-``ensure_timestamps``
+``ensure_timestamps (L001)``
 ---------------------
 
 Ensure that a job is configured to produce timestamps in its console
 output.
 
-``ensure_workspace_cleanup``
+``ensure_workspace_cleanup (L002)``
 ----------------------------
 
 Ensure that a job is configured to clean the workspace prior to execution.
@@ -19,7 +19,7 @@ Configuration Options
 
 No configuration options.
 
-``check_env_inject``
+``check_env_inject (L003)``
 --------------------
 
 If required environment settings are configured (see below), ensure
@@ -34,7 +34,7 @@ Configuration Options
     A comma-separated list of environment variable setting lines that
     should be present in job environments.
 
-``check_for_empty_shell``
+``check_for_empty_shell (L006)``
 -------------------------
 
 Ensure that all shell builders in a job have some content.
@@ -44,19 +44,24 @@ Configuration Options
 
 No configuration options.
 
-``check_job_references``
+``check_job_references (L004)``
 ------------------------
 
 Ensure that all job references have a target within the generated
 Jenkins configuration.  Currently, this checks the ``trigger-builds``
 builder.
 
+``check_column_configuration (L005)``
+------------------------
+
+Ensure that each list view has at least one column configured.
+
 Configuration Options
 ~~~~~~~~~~~~~~~~~~~~~
 
 No configuration options.
 
-``check_shebang``
+``check_shebang (L007)``
 -----------------
 
 Ensure that all shell builders in a job have an appropriate shebang.

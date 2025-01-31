@@ -32,7 +32,7 @@ cases:
               view-type: list
               columns: []
       expected_output: |
-          test-view: checking column configuration: FAIL: No columns configured
+          test-view: (L005) checking column configuration: FAIL: No columns configured
       expect_success: False
       runners_to_skip:
           - actual_jenkins  # Jenkins rejects the generated config with a 500

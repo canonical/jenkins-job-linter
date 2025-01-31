@@ -41,6 +41,7 @@ class Linter:
     """A super-class capturing the common linting pattern."""
 
     default_config = {}  # type: Dict[str, Any]
+    short_code = None  # type: bool
 
     def __init__(self, ctx: LintContext) -> None:
         """
@@ -87,6 +88,7 @@ class ListViewLinter(Linter):
 class EnsureTimestamps(JobLinter):
     """Ensure that a job is configured with timestamp output."""
 
+    short_code = 'L001'
     description = 'checking for timestamps'
     _xpath = (
         './buildWrappers/hudson.plugins.timestamper.TimestamperBuildWrapper')
@@ -102,6 +104,7 @@ class EnsureTimestamps(JobLinter):
 class EnsureWorkspaceCleanup(JobLinter):
     """Ensure that a job workspace is cleaned before execution."""
 
+    short_code = 'L002'
     description = 'checking for workspace cleanup'
     _xpath = (
         './buildWrappers/hudson.plugins.ws__cleanup.PreBuildCleanup')
@@ -117,6 +120,7 @@ class EnsureWorkspaceCleanup(JobLinter):
 class CheckEnvInject(JobLinter):
     """Ensure that required environment variables are injected."""
 
+    short_code = 'L003'
     default_config = {
         'required_environment_settings': '',
     }
@@ -160,6 +164,7 @@ class CheckEnvInject(JobLinter):
 class CheckJobReferences(JobLinter):
     """Ensure that jobs referenced for triggering exist."""
 
+    short_code = 'L004'
     description = 'checking job references'
     _xpath = (
         './builders/hudson.plugins.parameterizedtrigger.TriggerBuilder/configs'
@@ -183,6 +188,7 @@ class CheckJobReferences(JobLinter):
 class CheckColumnConfiguration(ListViewLinter):
     """Ensure that each list view has at least one column configured."""
 
+    short_code = 'L005'
     description = 'checking column configuration'
     _xpath = './columns/*'
 
@@ -197,6 +203,7 @@ class CheckColumnConfiguration(ListViewLinter):
 class ShellBuilderLinter(JobLinter):
     """A linter that operates on the shell builders of jobs."""
 
+    short_code = 'L006'
     _xpath = './builders/hudson.tasks.Shell/command'
 
     def actual_check(self) -> LintCheckResult:
@@ -225,6 +232,7 @@ class ShellBuilderLinter(JobLinter):
 class CheckForEmptyShell(ShellBuilderLinter):
     """Ensure that shell builders in a job have some content."""
 
+    short_code = 'L006'
     description = 'checking shell builder shell scripts are not empty'
 
     def shell_check(self, shell_script: Optional[str]) -> Tuple[LintResult,
@@ -245,6 +253,7 @@ class CheckShebang(ShellBuilderLinter):
     Shell builders with no shebang or a non-shell shebang are skipped.
     """
 
+    short_code = 'L007'
     default_config = {
         'allow_default_shebang': True,
         'required_shell_options': 'eux',
@@ -296,3 +305,5 @@ class CheckShebang(ShellBuilderLinter):
 
 extension_manager = ExtensionManager(namespace='jjl.linters')
 LINTERS = {ext.name: ext.plugin for ext in extension_manager}
+LINTER_SHORT_CODES = {linter.short_code: linter_name
+                      for linter_name, linter in LINTERS.items()}

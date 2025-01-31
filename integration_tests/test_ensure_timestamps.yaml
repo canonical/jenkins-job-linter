@@ -12,5 +12,5 @@ cases:
           - job:
               name: test-job
       expected_output: |
-        test-job: checking for timestamps: FAIL
+        test-job: (L001) checking for timestamps: FAIL
       expect_success: False

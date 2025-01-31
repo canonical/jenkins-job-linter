@@ -28,7 +28,7 @@ cases:
           [job_linter:check_env_inject]
           required_environment_settings = SET=this
       expected_output: |
-        test-job: checking environment variable injection: FAIL: Injection unexpectedly unconfigured
+        test-job: (L003) checking environment variable injection: FAIL: Injection unexpectedly unconfigured
       expect_success: False
 
     - name: test_single_configured_value_failure
@@ -49,7 +49,7 @@ cases:
           [job_linter:check_env_inject]
           required_environment_settings = SET=this
       expected_output: |
-        test-job: checking environment variable injection: FAIL: Did not find SET=this
+        test-job: (L003) checking environment variable injection: FAIL: Did not find SET=this
       expect_success: False
 
     - name: test_happy_path
@@ -91,7 +91,7 @@ cases:
           [job_linter:check_env_inject]
           required_environment_settings = SET=this, OR=this
       expected_output: |
-        test-job: checking environment variable injection: FAIL: Did not find SET=this
+        test-job: (L003) checking environment variable injection: FAIL: Did not find SET=this
       expect_success: False
 
     - name: test_partial_match_still_fails
@@ -114,7 +114,7 @@ cases:
           [job_linter:check_env_inject]
           required_environment_settings = SET=this, OR=this
       expected_output: |
-        test-job: checking environment variable injection: FAIL: Did not find OR=this
+        test-job: (L003) checking environment variable injection: FAIL: Did not find OR=this
       expect_success: False
 
     - name: test_happy_path_with_multiple_things_configured

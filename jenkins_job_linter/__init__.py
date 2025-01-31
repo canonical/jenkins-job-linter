@@ -23,7 +23,7 @@ import click
 import jenkins
 
 from jenkins_job_linter.config import _filter_config, GetListConfigParser
-from jenkins_job_linter.linters import LINTERS
+from jenkins_job_linter.linters import LINTERS, LINTER_SHORT_CODES
 from jenkins_job_linter.models import LintContext, RunContext
 
 
@@ -41,7 +41,8 @@ def lint_job_xml(ctx: RunContext, job_name: str, tree: ElementTree.ElementTree,
         result, text = linter(LintContext(section, ctx, tree)).check()
         if not result.value:
             success = False
-            output = '{}: {}: FAIL'.format(job_name, linter.description)
+            output = '{}: ({}) {}: FAIL'.format(job_name, linter.short_code,
+                                                linter.description)
             if text is not None:
                 output += ': {}'.format(text)
             print(output)
@@ -82,13 +83,59 @@ def lint_jobs_from_running_jenkins(jenkins_url: str, jenkins_username: str,
 
 @click.group()
 @click.option('--conf', type=click.Path(exists=True, dir_okay=False))
+@click.option('--select', default=[], metavar='<lint_short_code>',
+              type=click.STRING,
+              help='Select which linters, by short code, to run. '
+                   'A comma separated list is accepted'
+                   'If conf option is used then --select is not used.'
+                   'Use `list-linters` sub command to view list')
+@click.option('--ignore', default=[], metavar='<lint_short_code>',
+              type=click.STRING,
+              help='Select which linters, by short code, to ignore. '
+                   'A comma separated list is accepted'
+                   'If conf option is used then --ignore is not used'
+                   'Use `list-linters` sub command to view list')
 @click.pass_context
-def main(ctx: click.Context, conf: Optional[str] = None) -> None:
+def main(ctx: click.Context, conf: Optional[str] = None,
+         select: Optional[str] = None,
+         ignore: Optional[str] = None) -> None:
     """jenkins-job-linter: check your Jenkins jobs for common errors."""
     config = ConfigParser()
     if conf is not None:
         config.read(conf)
+    else:
+        if select:
+            config.add_section('job_linter')
+            only_run = []
+            for linter_short_code in select.split(','):
+                if linter_short_code in LINTER_SHORT_CODES:
+                    only_run.append(LINTER_SHORT_CODES[linter_short_code])
+
+            config.set('job_linter', 'only_run', ','.join(only_run))
+        if ignore:
+            config.add_section('job_linter')
+            disable_linters = []
+            for linter_short_code in ignore.split(','):
+                if linter_short_code in LINTER_SHORT_CODES:
+                    disable_linters.append(
+                            LINTER_SHORT_CODES[linter_short_code])
+
+            config.set('job_linter', 'disable_linters',
+                       ','.join(disable_linters))
+
     ctx.obj = config
+
+
+@main.command(name='list-linters')
+@click.pass_context
+def list_linters(ctx: click.Context) -> None:
+    """List linters."""
+    for linter_name, linter in LINTERS.items():
+        print('* {}'.format(linter_name))
+        print('\tShort code:\n\t\t{}'.format(linter.short_code))
+        print('\tDescription:\n\t\t{}'.format(linter.description))
+        if linter.default_config:
+            print('\tDefault Config:\n\t\t{}'.format(linter.default_config))
 
 
 @main.command(name='lint-directory')

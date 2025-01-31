@@ -59,7 +59,7 @@ cases:
                   - trigger-builds:
                       - project: missing-job
       expected_output: |
-          test-job: checking job references: FAIL: Reference to missing object missing-job
+          test-job: (L004) checking job references: FAIL: Reference to missing object missing-job
       expect_success: False
 
     - name: test_missing_trigger_builds_builder_target_errors_with_csv
@@ -74,7 +74,7 @@ cases:
                   - trigger-builds:
                       - project: missing-job,existent-job
       expected_output: |
-          test-job: checking job references: FAIL: Reference to missing object missing-job
+          test-job: (L004) checking job references: FAIL: Reference to missing object missing-job
       expect_success: False
 
     - name: test_missing_trigger_builds_builder_target_errors_with_space_separated_csv
@@ -89,7 +89,7 @@ cases:
                   - trigger-builds:
                       - project: missing-job, existent-job
       expected_output: |
-          test-job: checking job references: FAIL: Reference to missing object missing-job
+          test-job: (L004) checking job references: FAIL: Reference to missing object missing-job
       expect_success: False
 
     - name: test_multiple_projects_in_one_builder
@@ -105,7 +105,7 @@ cases:
           - job:
               name: existent-job
       expected_output: |
-          test-job: checking job references: FAIL: Reference to missing object missing-job
+          test-job: (L004) checking job references: FAIL: Reference to missing object missing-job
       expect_success: False
 
     - name: test_multiple_builders_in_one_job
@@ -122,7 +122,7 @@ cases:
           - job:
               name: existent-job
       expected_output: |
-          test-job: checking job references: FAIL: Reference to missing object missing-job
+          test-job: (L004) checking job references: FAIL: Reference to missing object missing-job
       expect_success: False
 
     - name: test_unconfigured_reference
@@ -135,5 +135,5 @@ cases:
                   - trigger-builds:
                       - project:
       expected_output: |
-          test-job: checking job references: FAIL: No reference configured
+          test-job: (L004) checking job references: FAIL: No reference configured
       expect_success: False

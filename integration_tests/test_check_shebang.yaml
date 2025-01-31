@@ -13,7 +13,7 @@ cases:
               builders:
                 - shell: "#!/bin/sh -ex"
       expected_output: |
-        test-job: checking shebang of shell builders: FAIL: Shebang is #!/bin/sh -ex
+        test-job: (L007) checking shebang of shell builders: FAIL: Shebang is #!/bin/sh -ex
       expect_success: False
 
     - name: test_shell_shebang_with_no_options
@@ -25,7 +25,7 @@ cases:
               builders:
                 - shell: "#!/bin/sh"
       expected_output: |
-        test-job: checking shebang of shell builders: FAIL: Shebang is #!/bin/sh
+        test-job: (L007) checking shebang of shell builders: FAIL: Shebang is #!/bin/sh
       expect_success: False
 
     - name: test_shell_shebang_with_no_recognisable_options
@@ -37,7 +37,7 @@ cases:
               builders:
                 - shell: "#!/bin/sh not opts"
       expected_output: |
-        test-job: checking shebang of shell builders: FAIL: Shebang is #!/bin/sh not opts
+        test-job: (L007) checking shebang of shell builders: FAIL: Shebang is #!/bin/sh not opts
       expect_success: False
 
     - name: test_non_shell_shebang
@@ -77,7 +77,7 @@ cases:
           [job_linter:check_shebang]
           allow_default_shebang = false
       expected_output: |
-        test-job: checking shebang of shell builders: FAIL: Shebang is Jenkins' default
+        test-job: (L007) checking shebang of shell builders: FAIL: Shebang is Jenkins' default
       expect_success: False
 
     - name: test_check_shebang_no_required_shell_options
@@ -112,7 +112,7 @@ cases:
           [job_linter:check_shebang]
           required_shell_options = opts
       expected_output: |
-        test-job: checking shebang of shell builders: FAIL: Shebang is #!/bin/sh -opt
+        test-job: (L007) checking shebang of shell builders: FAIL: Shebang is #!/bin/sh -opt
       expect_success: False
 
     - name: test_check_shebang_required_shell_options_success

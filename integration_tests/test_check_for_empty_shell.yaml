@@ -14,7 +14,7 @@ cases:
               builders:
                 - shell: ""
       expected_output: |
-        test-job: checking shell builder shell scripts are not empty: FAIL
+        test-job: (L006) checking shell builder shell scripts are not empty: FAIL
       expect_success: False
 
     - name: test_multiple_shell_builders
@@ -28,5 +28,5 @@ cases:
                 - shell: "just some code"
                 - shell: ""
       expected_output: |
-        test-job: checking shell builder shell scripts are not empty: FAIL
+        test-job: (L006) checking shell builder shell scripts are not empty: FAIL
       expect_success: False

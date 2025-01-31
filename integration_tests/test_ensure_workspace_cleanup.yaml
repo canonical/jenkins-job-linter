@@ -12,5 +12,5 @@ cases:
           - job:
               name: test-job
       expected_output: |
-        test-job: checking for workspace cleanup: FAIL
+        test-job: (L002) checking for workspace cleanup: FAIL
       expect_success: False
